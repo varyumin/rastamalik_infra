@@ -2,11 +2,13 @@
 Задание 1.
 В файл ~/.ssh/config добавил секции
 
+
 Host bastion
 Hostname 104.155.69.135 
 IdentityFile ~/.ssh/appuser
 user appuser
 ForwardAgent yes
+
 
 Host someinternalhost
 ForwardAgent yes
