@@ -1,4 +1,13 @@
 # rastamalik_infra
+
+Homework 07.
+Создал ветку packer-base
+Создал директорию config-scripts, перенес скрипты с прошлого ДЗ.
+Создал директорию packer, в нее уложил все *.json файлы.
+В директории packer создал поддиректорию scripts, поместил туда скрипты для создания packer образа.
+Создал immutable.json, дополнительный скрипт положил для "запекания" в packer/files
+Создал скрипт create-reddit-vm.sh, поместил его в config-scripts
+
 Задание 1.
 В файл ~/.ssh/config добавил секции
 
