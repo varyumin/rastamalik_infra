@@ -1,34 +1,9 @@
 {
-"builders": [
-{
-"type": "googlecompute",
-"project_id": "clever-overview-188908",
-"image_name": "puma-server-{{timestamp}}",
-"image_family": "puma-server",
-"source_image_family": "debian-8",
-"zone": "europe-west1-b",
-"ssh_username": "appuser",
-"machine_type": "g1-small",
-"disk_size": "20",
-"disk_type": "pd-standard",
-"network": "default",
-"tags": "http-server"
-
+"project_id1": "clever-overview-188908",
+"source_image_family1": "ubuntu-1604-lts",
+"machine_type1": "g1-small",
+"zone1": "europe-west1-b"
 }
-],
 
-"provisioners": [
 
-{
-"type": "shell",
-"script": "scripts/install_ruby.sh",
-"execute_command": "sudo {{.Path}}"
-},
-{
-"type": "shell",
-"scripts": "scripts/install_mongodb.sh",
-"execute_command": "sudo {{.Path}}"
-}
-]
-}
 
