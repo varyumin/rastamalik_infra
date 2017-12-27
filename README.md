@@ -6,8 +6,8 @@ Homework 07. \
 3.Создал директорию packer, в нее уложил все *.json файлы. \
 4.Для создания reddit-base образа, использовал ubuntu16.json \ 
 $ packer build ubuntu16.json \
-5.Для создания образа с измененными опциями "puma-server", использовал шаблон variables.json \
-$ packer build variable.json \
+5.Параметризировал шаблон ubuntu16.json, все переменные описал в файле variables.json, и создал образ командой \
+$ packer build -var-file=variables.json ubuntu16.json
 6.Для "запекания" образа все в одном reddit-full, с запущенным приложением создал шаблон immutable.json \
 $ packer build immutable.json \
 7.Для разворачивания VM машины использовал команду gcloud: \
