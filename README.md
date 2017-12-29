@@ -28,6 +28,8 @@ gcloud compute instances create $1 \
 --tags puma-server \
 --restart-on-failure \
 --zone=europe-west1-d \
+9.Параметризировал шаблон immutable.json, все переменные описал в файле variables-im.json, и создал образ командой \
+$ packer build -var-file=variables-im.json immutable.json 
 
 
 Задание 1.
