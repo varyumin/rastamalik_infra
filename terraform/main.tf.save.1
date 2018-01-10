@@ -1,0 +1,130 @@
+provider "google" {
+  version = "1.4.0"
+  project = "${var.project}"
+  region  = "${var.region}"
+
+}
+
+
+resource "google_compute_instance" "app" {
+  name         = "reddit-app"
+  machine_type = "g1-small"
+  zone         = "${var.zone}"
+
+  boot_disk {
+    initialize_params {
+      image = "${var.disk_image}"
+    }
+  }
+
+  metadata {
+    sshKeys = "appuser:${file(var.public_key_path)} "
+#    ssh-keys = "appuser1:${var.ssh_rsa} appuser1"
+ #   ssh-keys = "appuser2:${var.ssh_rsa} appuser2" 
+    
+ }
+
+
+
+  tags = ["reddit-app"]
+
+  network_interface {
+    network       = "default"
+    access_config = {}
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key)}"
+  }
+
+  provisioner "file" {
+    source      = "files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "files/deploy.sh"
+  }
+}
+
+resource "google_compute_firewall" "firewal_puma" {
+  name    = "allow-puma-default"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["995"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["reddit-app"]
+}
+
+
+
+resource "google_compute_global_address" "app_ip" {
+ name ="lb-ip-1"
+
+  }
+
+resource "google_compute_instance_group" "webservers" {
+  name        = "terraform-webservers"
+  description = "Terraform test instance group"
+named_port {
+    name = "tcp9292"
+    port = 9292
+  }
+  instances = [
+    "${google_compute_instance.app.self_link}",
+    
+  ]
+
+zone = "europe-west1-b"
+}
+
+
+resource "google_compute_health_check" "default" {
+  name = "default"
+ timeout_sec        = 1
+  check_interval_sec = 1
+
+  tcp_health_check {
+    port = "9292"
+  }
+}
+
+
+
+resource "google_compute_backend_service" "default" {
+  name        = "default-backend"
+  protocol    = "TCP"
+  timeout_sec = 10
+
+
+  health_checks = ["${google_compute_health_check.default.self_link}"]
+}
+
+
+resource "google_compute_target_tcp_proxy" "default" {
+  name = "test"
+  description = "test"
+  backend_service = "${google_compute_backend_service.default.self_link}"
+}
+
+resource "google_compute_global_forwarding_rule" "default" {
+  name       = "default-rule"
+
+ ip_address = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/addresses/lb-ip-1"
+
+
+    ports = "9292-9292"
+ 
+ 
+
+  target     = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/targetTcpProxies/test"
+
+  
+}

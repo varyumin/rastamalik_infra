@@ -1,0 +1,134 @@
+provider "google" {
+  version = "1.4.0"
+  project = "${var.project}"
+  region  = "${var.region}"
+
+}
+
+
+resource "google_compute_instance" "app" {
+  name         = "reddit-app"
+  machine_type = "g1-small"
+  zone         = "${var.zone}"
+
+  boot_disk {
+    initialize_params {
+      image = "${var.disk_image}"
+    }
+  }
+
+  metadata {
+    sshKeys = "appuser:${file(var.public_key_path)} "
+    ssh-keys = "appuser1:${var.ssh_rsa} appuser1"
+    ssh-keys = "appuser2:${var.ssh_rsa} appuser2" 
+    
+ }
+
+
+
+  tags = ["reddit-app"]
+
+  network_interface {
+    network       = "default"
+    access_config = {}
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key)}"
+  }
+
+  provisioner "file" {
+    source      = "files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "files/deploy.sh"
+  }
+}
+
+resource "google_compute_firewall" "firewal_puma" {
+  name    = "allow-puma-default"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9292"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["reddit-app"]
+}
+
+
+
+resource "google_compute_global_address" "app_ip" {
+ name ="lb-ip-1"
+
+  }
+
+
+
+resource "google_compute_instance_group" "app_group" {
+name ="www-resources"
+  instances = [
+    "${google_compute_instance.app.self_link}",
+    
+  ]
+
+named_port {
+name = "http"
+port = "9292"
+}
+
+     zone = "europe-west1-b"
+  
+}
+resource "google_compute_http_health_check" "app_health" {
+  name         = "authentication-health-check"
+  request_path = "/health_check"
+
+  timeout_sec        = 1
+  check_interval_sec = 1
+}
+
+resource "google_compute_backend_service" "puma" {
+  name        = "web-map-backend-service"
+  description = "Our company website"
+  port_name   = "9292"
+  protocol    = "HTTP"
+  timeout_sec = 10
+  enable_cdn  = false
+
+  backend {
+    group = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/zones/europe-west1-b/instanceGroups/www-resources"
+  }
+
+  health_checks = ["${google_compute_http_health_check.app_health.self_link}"]
+}
+
+resource "google_compute_url_map" "app_map" {
+  name        = "web-map"
+  description = "a description"
+
+  default_service = ["${google_compute_backend_service.web-map-backend-service.self_link}"]
+
+}
+
+resource "google_compute_target_http_proxy" "app" {
+  name        = "http-lb-proxy"
+  description = "a description"
+"https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/backendServices/web-map-backend-service",  url_map     = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/urlMaps/web-map"
+
+}
+
+resource "google_compute_forwarding_rule" "app" {
+  name       = "http-content-rule"
+    target     = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/targetHttpProxies/http-lb-proxy"
+  port_range = "9292"
+
+}
+
