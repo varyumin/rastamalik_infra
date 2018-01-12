@@ -3,7 +3,7 @@ Homework 09
 1. Создал файл inventory.yml с содержимым: \
 app: \
  hosts: \
-  appserver: \
+  appserver:\
    ansible_host: 35.205.71.79 \
 db: \
  hosts: \
