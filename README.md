@@ -1,4 +1,24 @@
 # rastamalik_infra
+Homework 09
+1. Создал файл inventory.json  с содержимым: \
+[app] \
+appserver ansible_host=35.205.71.79  \
+[db] \
+dbserver ansible_host=35.195.224.187 \
+2. Выполнил комаду: \
+ansible all -m ping -i inventory.json \                                                                         \
+
+appserver | SUCCESS => { \
+    "changed": false,  \
+    "ping": "pong" \
+} \
+dbserver | SUCCESS => { \
+    "changed": false,  \
+    "ping": "pong" \
+} \
+
+
+
 Задание 1.
 В файл ~/.ssh/config добавил секции
 
