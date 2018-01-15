@@ -1,16 +1,16 @@
 # rastamalik_infra
 
 HOMEWORK 09
-1. Задание выполено в папке terraform 
-Для создания инстансов db и app, packer-ом было создано два образа
-```reddit-db-base``` и ```reddit-app-base``` и обЪявили их в ```variables.tf.```
-После чего создали ```app.tf, db.tf, vpc.tf```.
-2. Создаем модули, папка ```modules``` и подпапки ```app, db, vpc```
-В подпапку app копируем app.tf -> main.tf, outputs.tf, variables.tf \
-В подпапку db копируем db.tf -> main.tf, outputs.tf, variables.tf \
-В папке terraform2 оставляем main.tf c ссылками на модули \
-В подпапке Vpc создаем main.tf c настройками файервола \
-4. В директории terraform2 создадим две директории stage и prod \
+1. Задание выполено в директории **terraform** 
+Для создания инстансов **db** и **app**, *packer*-ом было создано два образа
+**reddit-db-base** и **reddit-app-base** и обЪявили их в **variables.tf**.
+После чего создали **app.tf, db.tf, vpc.tf**.
+2. Создаем модули, директорию **modules** и директории **app, db, vpc**
+В подпапку **app** копируем код **app.tf -> main.tf**, файлы **outputs.tf, variables.tf** 2a
+В подпапку **db** копируем код **db.tf -> main.tf**, файлы **outputs.tf, variables.tf** 2a
+В папке terraform2 оставляем main.tf c ссылками на модули 2a
+В подпапке Vpc создаем main.tf c настройками файервола 2a
+4. В директории terraform2 создадим две директории stage и prod 
 в которые перенесем файлы из terraform2 - main.tf, variables.tf, outputs.tf, terraform.tvfars \
 В stage мы откроем доступ по SSH всем, в prod только для своего IP \
 5, В папке prod создадим файл backend.tf c содержимым:
