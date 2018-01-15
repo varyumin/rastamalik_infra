@@ -1,6 +1,6 @@
 # rastamalik_infra
 
-HOMEWORK 09
+## HOMEWORK 09
 1. Задание выполено в директории **terraform** 
 * Для создания инстансов **db** и **app**, *packer*-ом было создано два образа ***reddit-db-base*** и ***reddit-app-base*** и   объявили их в ***variables.tf***.
 * После чего создали ***app.tf, db.tf, vpc.tf***.
