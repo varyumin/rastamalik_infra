@@ -1,9 +1,9 @@
 # rastamalik_infra
 
 HOMEWORK 09
-1. Задание выполено в папке terraform2 1
-Для создания инстансов db и app, packer-ом было создано два образа 2
-reddit-db-base и reddit-app-base и обЪявили их в variables.tf. 3
+*1. Задание выполено в папке terraform2 1
+*Для создания инстансов db и app, packer-ом было создано два образа 2
+*reddit-db-base и reddit-app-base и обЪявили их в variables.tf. 3
 После чего создали app.tf, db.tf, vpc.tf.
 2. Создаем модули, папка modules и подпапки app, db, vpc \
 В подпапку app копируем app.tf -> main.tf, outputs.tf, variables.tf \
