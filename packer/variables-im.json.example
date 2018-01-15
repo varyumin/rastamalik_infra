@@ -1,0 +1,12 @@
+{
+"project_id1": "clever-overview-188908",
+"source_image_family1": "ubuntu-1604-lts",
+"machine_type1": "g1-small",
+"zone1": "europe-west1-d",
+"disk_size1": "20",
+"disk_type1": "pd-standard",
+"net1": "default"
+}
+
+
+
