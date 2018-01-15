@@ -24,6 +24,17 @@ variable private_key {
 }
 
 variable ssh_users {
+<<<<<<< HEAD
+description = "SSH User"
+}
+
+variable ssh_rsa {
+description = "Ssh-rsa"
+}
+variable count {
+description = "count"
+}
+=======
   description = "SSH User"
 }
 
@@ -45,3 +56,4 @@ variable db_disk_image {
   default     = "reddit-base"
 }
 
+>>>>>>> terraform2
