@@ -32,17 +32,16 @@ region ="europe-west1"
 } 
 ```
 
-Этим мы создали удаленное хранение стейт файла на GCS. \
-Создадим папки prod2 и stage2 и скопируем туда содержимое prod и stage только без стейт файла \
-При применении конфигурации terraform из папок prod2 и stage2 стейт файл "видит" c GCS \
+* Этим мы создали удаленное хранение стейт файла на ***GCS***. 
+* Создадим папки **prod2** и **stage2** и скопируем туда содержимое **prod** и **stage** только без стейт файла. 
+* При применении конфигурации **terraform** из папок **prod2** и **stage2** стейт файл "видит" c ***GCS*** 
 
-6. Добавление provisioner в модули app и db \
-Для начала создали packer -ом образ reddit-base образ с чистой ubuntu без приложения и бд, \
-В файле variables.tf в папке stage2 поменяли переменную в _disk_image на reddit-base \
-В файл main.tf в модули bd и app добавили ключ private_key = "${var.private_key}" \
-В папку modules/app добавили файлы для деплоя Puma - deploy.sh, puma.service \
-а в файл main.tf добавим секцию: \
- connection { \
+6. Добавление ```provisioner``` в модули **app** и **db**. 
+* Для начала создали ***packer*** -ом образ **reddit-base образ** с чистой Ubuntu без приложения и бд, 
+* В файле ```variables.tf``` в папке **stage2** поменяли переменную в  ```_disk_image``` на ***reddit-base*** 
+* В файл ```main.tf``` в модули ```bd``` и ```app``` добавили ключ ```private_key = "${var.private_key}"```
+* В папку **modules/app** добавили файлы для деплоя ***Puma - deploy.sh, puma.service*** а в файл ```main.tf``` добавим секцию: 
+ ```connection { \
     type        = "ssh" \
     user        = "appuser" \
     agent       = false \
@@ -55,11 +54,11 @@ region ="europe-west1"
   provisioner "remote-exec" { \
     script = "../modules/app/deploy.sh" \
   } \
-  
-В папку modules/db добавил файл install_mongodb.sh для установки БД \
-в файл main.tf добавил секцию: \
+  ```
+* В папку **modules/db** добавил файл ***install_mongodb.sh*** для установки БД:
+* В файл ```main.tf``` добавил секцию: 
 
-connection { \
+```connection { \
     type        = "ssh" \
     user        = "appuser" \
     agent       = false \
@@ -69,7 +68,7 @@ connection { \
   provisioner "remote-exec" { \
     script = "../modules/db/install_mongodb.sh" \
   } \
-
+```
 7. Реестр модулей. \
 В папке terraform2 создал файл storage-bucket.tf c содержимым:
 
