@@ -8,19 +8,18 @@ HOMEWORK 09
 * В подпапку **app** копируем код **app.tf -> main.tf**, файлы **outputs.tf, variables.tf** 
 * В подпапку **db** копируем код **db.tf -> main.tf**, файлы **outputs.tf, variables.tf** 
 * В папке **terraform** оставляем **main.tf** c ссылками на модули 
-* В подпапке Vpc создаем main.tf c настройками файервола 
-3. В директории terraform создадим две директории stage и prod 
-в которые перенесем файлы из terraform2 - main.tf, variables.tf, outputs.tf, terraform.tvfars \
-В stage мы откроем доступ по SSH всем, в prod только для своего IP \
-4, В папке prod создадим файл backend.tf c содержимым:
-terraform { \
-backend "gcs" { \
-bucket = "tf-prod" \
-prefix = "terraform/state" \
-project ="clever-overview-188908" \
-region ="europe-west1" \
-} \
-} \
+* В подпапке **vpc** создаем **main.tf** c настройками файервола 
+3. В директории **terraform** создадим две директории **stage** и **prod** в которые перенесем файлы из **terraform** -  **main.tf**, **variables.tf**, **outputs.tf**, **terraform.tvfars**.
+* В **stage** мы откроем доступ по SSH всем, в **prod** только для своего IP 
+4. В папке **prod** создадим файл **backend.tf** c содержимым:
+```terraform { 
+backend "gcs" { 
+bucket = "tf-prod" 
+prefix = "terraform/state" 
+project ="clever-overview-188908" 
+region ="europe-west1" 
+} 
+}```
 В папке stage создадим файл backend.tf c содержимым:
 terraform { \
 backend "gcs" { \
