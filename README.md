@@ -13,13 +13,14 @@ HOMEWORK 09
 * В **stage** мы откроем доступ по SSH всем, в **prod** только для своего IP 
 4. В папке **prod** создадим файл **backend.tf** c содержимым:
  ```terraform { 
-* backend "gcs" { 
-* bucket = "tf-prod" 
-* prefix = "terraform/state"
-* project ="clever-overview-188908" 
-* region ="europe-west1"
-* } 
-* }```
+ backend "gcs" { 
+ bucket = "tf-prod" 
+ prefix = "terraform/state"
+ project ="clever-overview-188908" 
+ region ="europe-west1"
+ } 
+ }
+```
 
 В папке stage создадим файл backend.tf c содержимым:
 terraform { \
