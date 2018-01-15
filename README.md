@@ -12,6 +12,7 @@ HOMEWORK 09
 3. В директории **terraform** создадим две директории **stage** и **prod** в которые перенесем файлы из **terraform** -  **main.tf**, **variables.tf**, **outputs.tf**, **terraform.tvfars**.
 * В **stage** мы откроем доступ по SSH всем, в **prod** только для своего IP 
 4. В папке **prod** создадим файл **backend.tf** c содержимым:
+
 ```terraform { ```
 ```backend "gcs" { ```
 ```bucket = "tf-prod" ```
@@ -20,6 +21,7 @@ HOMEWORK 09
 ```region ="europe-west1"``` 
 ```}``` 
 ```}```
+
 В папке stage создадим файл backend.tf c содержимым:
 terraform { \
 backend "gcs" { \
