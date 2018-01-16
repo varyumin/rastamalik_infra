@@ -19,6 +19,6 @@ ProxyCommand ssh -W %h:%p bastion
 ```
 2.
 
-```Host bastion:  внешний IP-104.155.69.135, внутренний IP-10.132.0.2;
-Host someinternalhost: внутренний IP-10.132.0.3;
-```
+```Host bastion:  внешний IP-104.155.69.135, внутренний IP-10.132.0.2;```
+```Host someinternalhost: внутренний IP-10.132.0.3;```
+
