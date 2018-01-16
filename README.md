@@ -1,6 +1,4 @@
 # rastamalik_infra
-<<<<<<< HEAD
-=======
 
 ## HOMEWORK 09
 1. Задание выполено в директории **terraform** 
@@ -166,7 +164,6 @@ port_range = "1883"
 
 Задание 1.
 В файл ~/.ssh/config добавил секции
->>>>>>> master
 
 gcloud compute instances create reddit-app2 \   
 --boot-disk-size=10GB \

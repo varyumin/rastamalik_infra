@@ -11,6 +11,3 @@ variable app_disk_image {
   default     = "reddit-base-1515483976"
 }
 
-variable private_key {
-  description = "private ssh key"
-}

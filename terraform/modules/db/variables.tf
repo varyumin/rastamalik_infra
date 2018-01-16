@@ -11,7 +11,4 @@ variable db_disk_image {
   default     = "reddit-db-base"
 }
 
-variable private_key {
-  description = "private ssh key"
-}
 
