@@ -9,7 +9,7 @@
 "db": {
  "hosts": { 
  "dbserver": { 
-"ansible_host": "35.195.224.187"
+"ansible_host": "35.195.100.35"
 }
 }
 },
