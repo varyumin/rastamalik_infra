@@ -247,6 +247,74 @@ ansible-playbook reddit_app_multiple_plays.yml --tags deploy-tag
   ```ansible-playbook site.yml```
   Проверим работу приложения по внешнему адресу IP:9292
   
-  6. Изменим _provision_ в **Packer** bash скрипты на Ansible плейбуки, для этого создадим плейбуки **packer_app
+  6. Изменим _provision_ в **Packer** bash скрипты на Ansible плейбуки, для этого создадим плейбуки **packer_app.yml**, **packer-db.yml**.
+  **packer_app.yml**:
+ 
+``` - name: Install Ruby and Build
+  hosts: all
+  tags: app-tags
+  become: true
+  vars:
+   db_host: 10.132.0.2
+  tasks:
+   
+   - name: Install the package "Ruby-full"
+     apt:
+      name: ruby-full
+      state: present
+   - name: Install the package "Ruby-bundler"
+     apt:
+      name: ruby-bundler
+      state: present
+   - name: Install the package "Bulid"
+     apt:
+      name: build-essential
+      state: present
+```
+**packer_db.yml**:
+
+```- name: Install MongoDB
+  hosts: all
+  tags: db-tag
+  become: true
+  
+  tasks:
+   - name: Add an apt key by id from a keyserver
+     apt_key:
+       keyserver: keyserver.ubuntu.com
+       id: EA312927
+   - apt_repository:
+       repo: deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2    multiverse
+       state: present
+       filename: 'mongodb-org-3.2'
+   - name:  Run the equivalent of "apt-get update" as a separate step
+     apt:
+      update_cache: yes
+   - name: Install the package "MongoDB"
+     apt:
+       name: mongodb-org
+       state: present
+
+
+  handlers:
+   - name: restart mongod
+     service: name=mongod state=restarted
+
+```
+Заменим секцию _provision_ в образах **app.json** и **db.json**:
+```"provisioners": [
+    {
+    "type": "ansible",
+    "playbook_file": "packer_app.yml"
+    }
+  ]
+ ```
+   ```"provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "packer_db.yml"
+    }
+  ]
+  ```
   
  
