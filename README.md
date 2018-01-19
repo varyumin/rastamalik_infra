@@ -1,6 +1,6 @@
 # rastamalik_infra
 
-##Homework 07. 
+## Homework 07. 
 1.Создал ветку **packer-base** 
 2.Создал директорию **config-scripts**, перенес скрипты с прошлого ДЗ.
 3.Создал директорию **packer**, в нее уложил все ```*.json``` файлы. 
