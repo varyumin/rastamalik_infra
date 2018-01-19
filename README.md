@@ -22,7 +22,7 @@
 --restart-on-failure 
 --zone=europe-west1-d 
 ```
-8.Для автоматизации создания VM машин создал скрипт ```create-reddit-vm.sh```: 
+8.Для автоматизации создания **VM** машин создал скрипт ```create-reddit-vm.sh```: 
 ```#!/bin/bash 
 instance=$1 
 gcloud compute instances create $1 
