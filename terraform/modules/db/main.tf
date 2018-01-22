@@ -19,16 +19,7 @@ resource "google_compute_instance" "db" {
   }
 
 
- connection {
-    type        = "ssh"
-    user        = "appuser"
-    agent       = false
-    private_key = "${file(var.private_key)}"
-  }
-  
-  provisioner "remote-exec" {
-    script = "../modules/db/install_mongodb.sh"
-  }
+
 
 
 }

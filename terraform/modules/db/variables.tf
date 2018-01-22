@@ -11,4 +11,3 @@ variable db_disk_image {
   default     = "reddit-db-base"
 }
 
-

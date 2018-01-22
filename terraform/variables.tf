@@ -1,11 +1,9 @@
 variable zone {
   description = "Zone"
-default = "europe-west1-d"
 }
 
 variable project {
   description = "Project ID"
-default = "clever-overview-188908"
 }
 
 variable region {
@@ -13,14 +11,37 @@ variable region {
   default     = "europe-west1"
 }
 
+variable public_key_path {
+  description = "Path to the public key used for ssh access"
+}
+
+variable disk_image {
+  description = "Disk image"
+}
+
+variable private_key {
+  description = "private ssh key"
+}
+
+variable ssh_users {
+  description = "SSH User"
+}
+
+variable ssh_rsa {
+  description = "Ssh-rsa"
+}
+
+variable count {
+  description = "count"
+}
 
 variable app_disk_image {
   description = "Disk image for reddit app"
-  default     = "reddit-app-base"
+  default     = "reddit-base"
 }
 
 variable db_disk_image {
   description = "Disk image for reddit db"
-  default     = "reddit-db-base"
+  default     = "reddit-base"
 }
 

@@ -23,7 +23,17 @@ variable private_key {
   description = "private ssh key"
 }
 
+variable ssh_users {
+  description = "SSH User"
+}
 
+variable ssh_rsa {
+  description = "Ssh-rsa"
+}
+
+variable count {
+  description = "count"
+}
 
 variable app_disk_image {
   description = "Disk image for reddit app"
@@ -34,4 +44,3 @@ variable db_disk_image {
   description = "Disk image for reddit db"
   default     = "reddit-db-base"
 }
-
