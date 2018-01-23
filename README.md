@@ -1,5 +1,42 @@
 # rastamalik_infra
-
+##Homework 10
+1. Создал файл ```inventory.yml``` с содержимым: 
+```app: 
+ hosts: 
+  appserver:
+   ansible_host: 35.205.71.79 
+db: 
+ hosts: 
+  dbserver: 
+   ansible_host: 35.195.224.187 
+```
+2.Создал файл ```inventory.json``` с содержимым: 
+```{ 
+"app": { 
+  "hosts": { 
+     "appserver": {  
+"ansible_host": "35.205.71.79" 
+} 
+} 
+}, 
+"db": { 
+ "hosts": {  
+ "dbserver": {  
+"ansible_host": "35.195.224.187" 
+} 
+} 
+},
+}  
+3. Вывод команды **ansible all -m ping -i inventory.yml и inventory.json** 
+```appserver | SUCCESS => { 
+    "changed": false,  
+    "ping": "pong" 
+} 
+dbserver | SUCCESS => { 
+    "changed": false, 
+    "ping": "pong" 
+} 
+```
 ## HOMEWORK 09
 1. Задание выполено в директории **terraform** 
 * Для создания инстансов **db** и **app**, *packer*-ом было создано два образа ***reddit-db-base*** и ***reddit-app-base*** и   объявили их в ```variables.tf```.
@@ -95,77 +132,112 @@ storage-bucket_url = [
     gs://storage-bucket-test4 
 ] 
 ```
+## Задание 8. 
 
-
-
-Задание 8. 1.Созданы файлы main.tf, outputs.tf,variables.tf,terraform.tvfars.example
+1.Созданы файлы ```main.tf```, ```outputs.tf```,```variables.tf```,```terraform.tvfars.example```
 2. Задание со звездочкой:
-В metadata добавил
-ssh-keys = "appuser1:${var.ssh_rsa} appuser1"
+В ```metadata``` добавил
+```ssh-keys = "appuser1:${var.ssh_rsa} appuser1"
 ssh-keys = "appuser2:${var.ssh_rsa} appuser2"
+```
 3. Задание сдвумя звездочками:
-Создал HTTP балансер, но PUMA пришлось запускать с портом 1883, который прописал puma.service,
-т.к. в resource "global_forwarding_rule" опция port_range жескто прописывается с определенными портами. \
+Создал **HTTP балансер**, но **PUMA** пришлось запускать с портом 1883, который прописал **puma.service**,
+т.к. в resource "global_forwarding_rule" опция ```port_range``` жескто прописывается с определенными портами. 
 
-resource "google_compute_global_address" "app_ip" {
+```resource "google_compute_global_address" "app_ip" {
 name ="lb-ip-1"
-} \
+} 
 
 resource "google_compute_instance_group" "pumaservers" {
 name = "puma-group"
-description = "Terraform instance group" \
+description = "Terraform instance group" 
 
 instances = [
 "${google_compute_instance.app.0.self_link}",
 "${google_compute_instance.app.1.self_link}",
-] \
+] 
 
 named_port {
 name = "http"
 port = "1883"
 }
 zone = "europe-west1-d"
-} \
+} 
 
 resource "google_compute_health_check" "default" {
-name = "default" \
+name = "default" 
 
 timeout_sec = 1
-check_interval_sec = 1 \
+check_interval_sec = 1 
 
 tcp_health_check {
 port = "1883"
 }
-} \
+} 
 
 resource "google_compute_target_tcp_proxy" "default" {
 name = "default"
 description = "test"
 backend_service = "${google_compute_backend_service.default.self_link}"
-} \
+} 
 
 resource "google_compute_backend_service" "default" {
 name = "default-backend"
 protocol = "TCP"
-timeout_sec = 10 \
+timeout_sec = 10 
 
 backend {
 group = "${google_compute_instance_group.pumaservers.self_link}"
 }
 health_checks = ["${google_compute_health_check.default.self_link}"]
-} \
+} 
 
 resource "google_compute_global_forwarding_rule" "default" {
 name = "default"
 target = "${google_compute_target_tcp_proxy.default.self_link}"
 ip_address = "https://www.googleapis.com/compute/v1/projects/clever-overview-188908/global/addresses/lb-ip-1"
 port_range = "1883"
-} \
+} 
+```
 
-Задание 1.
-В файл ~/.ssh/config добавил секции
-
-gcloud compute instances create reddit-app2 \   
+## Homework 07. 
+1.Создал ветку **packer-base** 
+2.Создал директорию **config-scripts**, перенес скрипты с прошлого ДЗ.
+3.Создал директорию **packer**, в нее уложил все ```*.json``` файлы. 
+4.Для создания **reddit-base** образа, использовал ```ubuntu16.json```  
+```$ packer build ubuntu16.json
+```
+5.Параметризировал шаблон ```ubuntu16.json```, все переменные описал в файле ```variables.json```, и создал образ командой 
+```$ packer build -var-file=variables.json ubuntu16.json
+```
+6.Для "запекания" образа все в одном **reddit-full**, с запущенным приложением создал шаблон ```immutable.json``` 
+```$ packer build immutable.json 
+```
+7.Для разворачивания VM машины использовал команду **gcloud**: 
+```gcloud compute instances create reddit-full 
+--boot-disk-size=20GB 
+--image-family reddit-full 
+--machine-type=g1-small 
+--tags puma-server 
+--restart-on-failure 
+--zone=europe-west1-d 
+```
+8.Для автоматизации создания **VM** машин создал скрипт ```create-reddit-vm.sh```: 
+```#!/bin/bash 
+instance=$1 
+gcloud compute instances create $1 
+--boot-disk-size=20GB 
+--image-family reddit-full 
+--machine-type=g1-small 
+--tags puma-server 
+--restart-on-failure 
+--zone=europe-west1-d 
+```
+9.Параметризировал шаблон ```immutable.json```, все переменные описал в файле ```variables-im.json```, и создал образ командой 
+  ```$ packer build -var-file=variables-im.json immutable.json 
+```
+## HOMEWORK-06
+```gcloud compute instances create reddit-app2 \   
 --boot-disk-size=10GB \
 --image-family ubuntu-1604-lts \
 --image-project=ubuntu-os-cloud \
@@ -173,14 +245,27 @@ gcloud compute instances create reddit-app2 \
 --tags puma-server \
 --restart-on-failure \
 --metadata startup-script='wget -O - https://gist.github.com/rastamalik/f46a2d70f49fc428f1e6c2e0bce279dc/raw/run_app.sh | bash'
+```
+## HOMEWORK-05
+
+1.В файл ```~/.ssh/config``` добавил секции
 
 
-Задание 1. В файл ~/.ssh/config добавил секции
+```Host bastion
+Hostname 104.155.69.135 
+IdentityFile ~/.ssh/appuser
+user appuser
+ForwardAgent yes
 
-Host bastion Hostname 104.155.69.135 IdentityFile ~/.ssh/appuser user appuser ForwardAgent yes
+Host someinternalhost
+ForwardAgent yes
+Hostname someinternalhost
+IdentityFile ~/.ssh/appuser
+user appuser
+ProxyCommand ssh -W %h:%p bastion
+```
+2.
 
-Host someinternalhost ForwardAgent yes Hostname someinternalhost IdentityFile ~/.ssh/appuser user appuser ProxyCommand ssh -W %h:%p bastion
+```Host bastion:  внешний IP-104.155.69.135, внутренний IP-10.132.0.2;```
+```Host someinternalhost: внутренний IP-10.132.0.3;```
 
-Задание 2.
-
-Host bastion: внешний IP-104.155.69.135, внутренний IP-10.132.0.2; Host someinternalhost: внутренний IP-10.132.0.3;
