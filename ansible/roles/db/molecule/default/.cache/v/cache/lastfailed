@@ -1,0 +1,3 @@
+{
+  "tests/test_default.py::test_tcp_sockets_on_port": true
+}
