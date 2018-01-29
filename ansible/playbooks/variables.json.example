@@ -1,0 +1,8 @@
+{
+"project_id1": "clever-overview-188908",
+"source_image_family1": "ubuntu-1604-lts",
+"machine_type1": "g1-small",
+"zone1": "europe-west1-b",
+"ansible_path": "~/rastamalik_infra"
+
+}
