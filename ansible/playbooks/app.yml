@@ -5,5 +5,14 @@
   vars:
    db_host: 10.10.10.10
   roles:
-   - app
-   - ~/.ansible/roles/jdauphant.nginx
+    - role: app
+    - role: ~/.ansible/roles/jdauphant.nginx
+
+      nginx_sites:
+       default:
+        - listen 80
+        - server_name "reddit"
+        - location / { proxy_pass http://127.0.0.1:9292; }
+      state: present
+      notify:
+       - reload nginx
