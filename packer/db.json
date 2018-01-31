@@ -8,26 +8,25 @@
   },
   "builders": [
     {
-    "type": "googlecompute",
-    "image_description": "baked-image with mongodb",
-    "project_id": "{{user `proj_id`}}",
-    "image_name": "reddit-db-base-{{timestamp}}",
-    "image_family": "reddit-db-base",
-    "source_image_family": "{{user `s_im_fam`}}",
-    "disk_size": "10",
-    "disk_type": "pd-standard",
-    "zone": "europe-west1-b",
-    "tags": "{{user `mytags`}}",
-    "subnetwork": "{{user `snet_name`}}",
-    "ssh_username": "appuser",
-    "machine_type": "{{user `m_type`}}"
+      "type": "googlecompute",
+      "image_description": "baked-image with mongodb",
+      "project_id": "{{user `proj_id`}}",
+      "image_name": "reddit-db-base-{{timestamp}}",
+      "image_family": "reddit-db-base",
+      "source_image_family": "{{user `s_im_fam`}}",
+      "disk_size": "10",
+      "disk_type": "pd-standard",
+      "zone": "europe-west1-b",
+      "tags": "{{user `mytags`}}",
+      "subnetwork": "{{user `snet_name`}}",
+      "ssh_username": "appuser",
+      "machine_type": "{{user `m_type`}}"
     }
   ],
   "provisioners": [
     {
-    "type": "shell",
-    "script": "scripts/install_mongodb.sh",
-    "execute_command": "sudo {{.Path}}"
+      "type": "ansible",
+      "playbook_file": "ansible/playbooks/packer_db.yml"
     }
   ]
 }
