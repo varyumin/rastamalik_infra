@@ -7,4 +7,3 @@ gcloud compute instances create $1 \
 --tags puma-server \
 --restart-on-failure \
 --zone=europe-west1-d
-
